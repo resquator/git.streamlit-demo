@@ -1,10 +1,11 @@
 import streamlit as st
 import pandas as pd
-from sklearn import datasets
+import pickle
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 st.write("""
-# Simple Iris Flower Prediction App
+# Iris Flower Prediction App V1.0-a
 This app predicts the **Iris flower** type!
 """)
 
@@ -27,21 +28,20 @@ df = user_input_features()
 st.subheader('User Input parameters')
 st.write(df)
 
-iris = datasets.load_iris()
-X = iris.data
-Y = iris.target
 
-clf = RandomForestClassifier()
-clf.fit(X, Y)
+filename = 'iris-model.pkl'
+clf = pickle.load(open(filename, 'rb'))
+
 
 prediction = clf.predict(df)
 prediction_proba = clf.predict_proba(df)
 
 st.subheader('Class labels and their corresponding index number')
-st.write(iris.target_names)
+v_names = np.array(['setosa', 'versicolor', 'virginica'])
+st.write(v_names)
 
 st.subheader('Prediction')
-st.write(iris.target_names[prediction])
+st.write(v_names[prediction])
 #st.write(prediction)
 
 st.subheader('Prediction Probability')
